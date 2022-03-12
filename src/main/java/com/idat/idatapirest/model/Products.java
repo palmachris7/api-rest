@@ -1,14 +1,17 @@
 package com.idat.idatapirest.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
-
+@Table(name = "products")
+@Entity
 public class Products implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6026109738059984351L;
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idProducto;
 	private String nombreProducto;
 	private String descripcion;
