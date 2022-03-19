@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.idat.idatapirest.dto.ProductRequestDTO;
 import com.idat.idatapirest.model.Products;
 import com.idat.idatapirest.service.ProductService;
 
@@ -21,20 +22,20 @@ public class ProductController {
 
 	@Autowired
 	private ProductService service;
-	
+
 	@RequestMapping(method = RequestMethod.GET, path = "/listar")
 	public ResponseEntity<List<Products>>listar(){
-		
+
 		return new ResponseEntity<List<Products>>(service.listarProductos(),HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, path = "/guardar")
-	public ResponseEntity<Void> guardar(@RequestBody Products producto){
+	public ResponseEntity<Void> guardar(@RequestBody ProductRequestDTO producto){
 		service.guardarProducto(producto);
 		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
-	
-	
+
+
 	@RequestMapping(method = RequestMethod.GET, path = "/listar/{id}")
 	public @ResponseBody ResponseEntity<Products> productById(@PathVariable Integer id){
 		Products product = service.productById(id);
@@ -45,7 +46,7 @@ public class ProductController {
 		return new ResponseEntity<Products>(HttpStatus.NOT_FOUND);
 
 	}
-	
+
 	@RequestMapping(method = RequestMethod.DELETE, path = "/eliminar/{id}")
 	public ResponseEntity<Void> eliminar(@PathVariable Integer id){
 		Products product = service.productById(id);
@@ -56,7 +57,7 @@ public class ProductController {
 		return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT, path = "/editar")
 	public ResponseEntity<Void> editar(@RequestBody Products producto){
 		Products product = service.productById(producto.getIdProducto());
@@ -67,5 +68,5 @@ public class ProductController {
 		return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 	}
 
-	
+
 }
