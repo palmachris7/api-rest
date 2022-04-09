@@ -29,7 +29,6 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public void eliminarProducto(Integer id) {
-		// TODO Auto-generated method stub
 		repository.deleteById(id);
 	}
 

@@ -7,6 +7,7 @@ public class ProductRequestDTO {
         private String descripcionProducto;
         private Double precioProducto;
         private Integer stockProducto;
+
         public Integer getIdRequest() {
             return idRequest;
         }
