@@ -57,6 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/crearToken").permitAll()
+                .antMatchers("/producto/v1/*").access("hasRole('ADMIN')")
+                .antMatchers("/cliente/v1/*").access("hasRole('ADMIN')")
                 .anyRequest()
                 .authenticated()
                 .and()
