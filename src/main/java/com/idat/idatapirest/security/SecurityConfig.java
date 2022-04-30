@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
@@ -19,19 +21,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JWTUserDetailService jWTUserDetailService;
+/*
 
     @Autowired
     private JWTTokenFilter jWTTokenFilter;
 
     @Autowired
     private JWTEntryPoint jWTEntryPoint;
+*/
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-       // auth.inMemoryAuthentication().withUser("ADMINISTRADOR").password(encoder().encode("123")).roles("ADMIN");
-       // auth.inMemoryAuthentication().withUser("ALUMNO").password(encoder().encode("123")).roles("USER");
-       // auth.inMemoryAuthentication().withUser("PROFESOR").password(encoder().encode("123")).roles("LOCAL");
             auth.userDetailsService(jWTUserDetailService).passwordEncoder(encoder());
 
 
@@ -40,22 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-         /*  http.authorizeRequests()
-
-             .antMatchers("/proveedor/v1/*").access("hasRole('USER')")
-                .antMatchers("/producto/v1/*").access("hasRole('USER')")
-                .antMatchers("/cliente/v1/*").access("hasRole('LOCAL')")
-                .antMatchers("/item/v1/*").access("hasRole('LOCAL')")
-                .antMatchers("/proveedor/v1/*").access("hasRole('ADMIN')")
-                .antMatchers("/producto/v1/*").access("hasRole('ADMIN')")
-                .antMatchers("/cliente/v1/*").access("hasRole('ADMIN')")
-                .antMatchers("/item/v1/*").access("hasRole('ADMIN')")
-                .and()
-                .httpBasic()
-                .and()
-                .csrf().disable();*/
-
-        http.authorizeRequests()
+       /* http.authorizeRequests()
                 .antMatchers("/crearToken").permitAll()
                 .antMatchers("/producto/v1/*").access("hasRole('ADMIN')")
                 .antMatchers("/cliente/v1/*").access("hasRole('ADMIN')")
@@ -69,7 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(jWTTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .csrf().disable();
+                .csrf().disable();*/
+        http.anonymous().disable();
     }
 
 
@@ -79,9 +66,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
+    @Bean
+    public TokenStore token(){
+        return new InMemoryTokenStore();
+    }
 
 }
